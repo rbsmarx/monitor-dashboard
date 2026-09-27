@@ -1,0 +1,13 @@
+body { font-family: Arial, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; padding:0 20px 40px; }
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
+.cards { display:flex; gap:15px; flex-wrap:wrap; margin-bottom:20px; }
+.cards .card { background:#1e293b; padding:15px 20px; border-radius:10px; min-width:150px; }
+.cards .card.alerta { border:2px solid #ef4444; }
+.cards .card.ok { border:2px solid #22c55e; }
+.graficos { display:flex; gap:20px; flex-wrap:wrap; }
+.card-grafico { background:#1e293b; padding:15px; border-radius:10px; flex:1; min-width:300px; }
+table { width:100%; border-collapse:collapse; margin-top:10px; }
+th, td { text-align:left; padding:8px; border-bottom:1px solid #334155; }
+.status-ativo { color:#22c55e; font-weight:bold; }
+.status-parado { color:#ef4444; font-weight:bold; }
+#lista-alertas li { background:#7f1d1d; padding:8px; border-radius:6px; margin-bottom:6px; }

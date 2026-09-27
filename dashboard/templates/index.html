@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard de Monitoramento - VPS</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>?? Dashboard de Monitoramento</h1>
+    <span id="ultima-atualizacao">Carregando...</span>
+  </header>
+
+  <section class="cards" id="cards-status"></section>
+
+  <section class="graficos">
+    <div class="card-grafico">
+      <h3>Uso de RAM (%)</h3>
+      <canvas id="graficoRam"></canvas>
+    </div>
+    <div class="card-grafico">
+      <h3>Uso de CPU (%)</h3>
+      <canvas id="graficoCpu"></canvas>
+    </div>
+    <div class="card-grafico">
+      <h3>Rede (KB/s)</h3>
+      <canvas id="graficoRede"></canvas>
+    </div>
+  </section>
+
+  <section>
+    <h3>Serviços</h3>
+    <table id="tabela-servicos">
+      <thead><tr><th>Nome</th><th>Serviço</th><th>Status</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h3>Containers - Proxy</h3>
+    <table id="tabela-containers-proxy">
+      <thead><tr><th>Nome</th><th>Container</th><th>Status</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h3>Containers - Bancos de Dados</h3>
+    <table id="tabela-containers-db">
+      <thead><tr><th>Nome</th><th>Container</th><th>Status</th><th>Tamanho (MB)</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h3>?? Alertas Recentes</h3>
+    <ul id="lista-alertas"></ul>
+  </section>
+
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>
