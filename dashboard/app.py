@@ -13,6 +13,7 @@ LOG_FILE = os.path.join(BASE_DIR, "logs", "monitor.log")
 
 # ==========================================================
 # Carrega variáveis do servicos.env (parser simples)
+# Remove aspas simples OU duplas nas pontas do valor
 # ==========================================================
 def carregar_env(caminho):
     config = {}
@@ -23,16 +24,31 @@ def carregar_env(caminho):
             linha = linha.strip()
             if not linha or linha.startswith("#"):
                 continue
-            m = re.match(r'^([A-Z0-9_]+)\s*=\s*"?([^"\n]*)"?$', linha)
+            m = re.match(r'^([A-Z0-9_]+)\s*=\s*(.*)$', linha)
             if m:
-                config[m.group(1)] = m.group(2)
+                chave, valor = m.group(1), m.group(2).strip()
+                # remove aspas simples ou duplas nas extremidades
+                if len(valor) >= 2 and valor[0] == valor[-1] and valor[0] in ("'", '"'):
+                    valor = valor[1:-1]
+                config[chave] = valor
     return config
 
-ENV = carregar_env(ENV_FILE)
+_ENV_ARQUIVO = carregar_env(ENV_FILE)
 
-USUARIO = ENV.get("DASHBOARD_USUARIO", "admin")
-SENHA_HASH = ENV.get("DASHBOARD_SENHA_HASH", "")
-LIMITE_REGISTROS = int(ENV.get("DASHBOARD_LIMITE_REGISTROS", "200"))
+def obter_config(chave, padrao=""):
+    """
+    Prioridade: variável de ambiente do container (Ambiente do EasyPanel)
+    -> arquivo servicos.env (bind mount)
+    -> valor padrão
+    """
+    valor = os.environ.get(chave)
+    if valor is not None and valor != "":
+        return valor
+    return _ENV_ARQUIVO.get(chave, padrao)
+
+USUARIO = obter_config("DASHBOARD_USUARIO", "admin")
+SENHA_HASH = obter_config("DASHBOARD_SENHA_HASH", "")
+LIMITE_REGISTROS = int(obter_config("DASHBOARD_LIMITE_REGISTROS", "200"))
 
 from werkzeug.security import check_password_hash
 
@@ -105,9 +121,8 @@ def api_status():
 
 @app.route("/health")
 def health():
-    # Endpoint sem autenticação, apenas para checagem interna (não expõe dados)
     return jsonify({"status": "ok"})
 
 if __name__ == "__main__":
-    porta = int(ENV.get("DASHBOARD_PORTA", "8501"))
+    porta = int(obter_config("DASHBOARD_PORTA", "8501"))
     app.run(host="127.0.0.1", port=porta)
