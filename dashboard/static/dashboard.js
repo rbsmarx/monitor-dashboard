@@ -11,11 +11,11 @@ async function buscarDados() {
   cards.innerHTML = `
     <div class="card ${ultimo.ram.uso_percent >= 85 ? 'alerta' : 'ok'}">RAM: ${ultimo.ram.uso_percent}%</div>
     <div class="card ${ultimo.cpu_percent >= 90 ? 'alerta' : 'ok'}">CPU: ${ultimo.cpu_percent}%</div>
-    <div class="card ok">Conexıes TCP: ${ultimo.conexoes_tcp}</div>
+    <div class="card ok">Conex√µes TCP: ${ultimo.conexoes_tcp}</div>
     <div class="card ok">Uptime: ${Math.floor(ultimo.uptime_segundos/3600)}h</div>
   `;
 
-  // Tabela de serviÁos
+  // Tabela de servi√ßos
   const tbody = document.querySelector("#tabela-servicos tbody");
   tbody.innerHTML = "";
   ultimo.servicos.forEach(s => {
@@ -43,12 +43,12 @@ async function buscarDados() {
   const listaAlertas = document.getElementById("lista-alertas");
   listaAlertas.innerHTML = "";
   if (ultimo.alertas.length === 0) {
-    listaAlertas.innerHTML = "<li style='background:#166534;'>Nenhum alerta ativo ?</li>";
+    listaAlertas.innerHTML = "<li style='background:#166534;'>Nenhum alerta ativo</li>";
   } else {
     ultimo.alertas.forEach(a => listaAlertas.innerHTML += `<li>${a}</li>`);
   }
 
-  // Gr·ficos
+  // Gr√°ficos
   const labels = dados.map(d => d.timestamp.split(" ")[1]);
   renderGrafico("graficoRam", labels, dados.map(d => d.ram.uso_percent), "RAM %", "#3b82f6");
   renderGrafico("graficoCpu", labels, dados.map(d => d.cpu_percent), "CPU %", "#f59e0b");
