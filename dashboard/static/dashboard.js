@@ -7,13 +7,17 @@ async function buscarDados() {
   document.getElementById("ultima-atualizacao").innerText = "Atualizado: " + ultimo.timestamp;
 
   // Cards de status geral
+  const disco = ultimo.discos.find(d => d.particao === "/") || { uso_percent: 0 };
+
   const cards = document.getElementById("cards-status");
   cards.innerHTML = `
     <div class="card ${ultimo.ram.uso_percent >= 85 ? 'alerta' : 'ok'}">RAM: ${ultimo.ram.uso_percent}%</div>
     <div class="card ${ultimo.cpu_percent >= 90 ? 'alerta' : 'ok'}">CPU: ${ultimo.cpu_percent}%</div>
+    <div class="card ${disco.uso_percent >= 85 ? 'alerta' : 'ok'}">Disco: ${disco.uso_percent}%</div>
     <div class="card ok">Conexões TCP: ${ultimo.conexoes_tcp}</div>
     <div class="card ok">Uptime: ${Math.floor(ultimo.uptime_segundos/3600)}h</div>
   `;
+
 
   // Tabela de serviços
   const tbody = document.querySelector("#tabela-servicos tbody");
